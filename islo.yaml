@@ -1,0 +1,9 @@
+# Islo Configuration - GX Core e2e demo
+sandbox: gx-demo
+
+cpu: 2
+memory_mb: 4096
+disk_gb: 20
+
+setup_script: |
+  pip install --quiet great_expectations
