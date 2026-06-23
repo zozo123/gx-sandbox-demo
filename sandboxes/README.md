@@ -1,41 +1,48 @@
-# Running the demo in a sandbox
+# Pan-provider sandbox runners
 
-The demo is intentionally provider-agnostic — it's just `pip install great_expectations`
-plus a single Python file — so it runs in any ephemeral sandbox. This directory holds
-thin launchers for three providers.
+The demo is provider-agnostic — it's just `pip install great_expectations` plus one
+file — so it runs in any ephemeral code sandbox. This package exposes **one interface**
+across providers:
 
-| Provider | Type | Broker / key | File transfer | Status |
+```bash
+python sandboxes/run.py --list            # show providers + status
+python sandboxes/run.py islo              # run gx_demo.py in islo.dev
+python sandboxes/run.py crabbox           # run in a local Apple container
+python sandboxes/run.py daytona my.py     # run a different script
+```
+
+Every provider implements the same contract in [`providers.py`](providers.py):
+
+```python
+def run(script: str = "gx_demo.py") -> str:  # execute the script, return stdout
+```
+
+## Providers
+
+| Provider | Type | Auth | Status | Issue |
 |---|---|---|---|---|
-| **islo.dev** | Cloud Firecracker microVM | `islo login` | stdin inject (no cwd sync) | ✅ Verified (Py 3.12.13) |
-| **crabbox.sh** (`apple-container`) | Local Apple container | None (brokerless) | git checkout sync | ✅ Verified |
-| **Daytona** | Cloud AI sandbox | `DAYTONA_API_KEY` | SDK upload | 📄 Documented (SDK; not run in CI) |
+| **islo.dev** | Cloud Firecracker microVM | `islo login` | ✅ Verified (reference) | — |
+| **crabbox** (`apple-container`) | Local Apple container, brokerless | none | ✅ Verified | — |
+| **Daytona** | Cloud AI sandbox (SDK) | `DAYTONA_API_KEY` | 🟡 Implemented; verify e2e | [#8](https://github.com/zozo123/gx-sandbox-demo/issues/8) |
+| **Modal** | Serverless containers | `modal token` | ⬜ Planned | [#6](https://github.com/zozo123/gx-sandbox-demo/issues/6) |
+| **E2B** | Code Interpreter sandbox | `E2B_API_KEY` | ⬜ Planned | [#7](https://github.com/zozo123/gx-sandbox-demo/issues/7) |
+| **Tensorlake** | Document-ingestion / data infra | — | ❌ Not a sandbox | [#9](https://github.com/zozo123/gx-sandbox-demo/issues/9) |
 
-> **Note:** "AI sandbox" here means a *code-execution* runtime. Tools like **Tensorlake**
-> are **not** sandboxes — they're document-ingestion / data infrastructure. Tensorlake
-> would sit *upstream* of GX (parse documents → rows → GX validates them), not as a place
-> to execute this script.
+Tracking: [#5](https://github.com/zozo123/gx-sandbox-demo/issues/5).
 
-## islo.dev
+> **Why Tensorlake is not a runner:** it's document-ingestion / data infrastructure, not a
+> code-execution sandbox. It belongs *upstream* of GX as a **data source** (parse documents
+> → rows → GX validates them), so it's tracked as a data-source integration (#9), not a `run()`
+> provider.
 
-```bash
-sandboxes/run_islo.sh            # injects gx_demo.py over stdin into python:3.12-slim
-```
+## Adding a provider
 
-## crabbox.sh (Apple container, brokerless)
+1. Add a `run_<name>(script=...) -> str` function in `providers.py` (import any SDK **lazily**
+   inside the function so the module stays importable without optional deps).
+2. Register it in the `PROVIDERS` dict with a `status`.
+3. Verify it produces the canonical output and close the provider's tracking issue.
 
-```bash
-sandboxes/run_crabbox.sh         # syncs the checkout into a local Apple container
-```
-
-## Daytona
-
-```bash
-pip install daytona
-export DAYTONA_API_KEY=...        # from app.daytona.io
-python sandboxes/run_daytona.py   # create → upload → exec → delete
-```
-
-All three produce the same deterministic output (one expectation fails by design):
+All providers produce the same deterministic output (one expectation fails by design):
 
 ```
 overall: FAIL
