@@ -38,22 +38,23 @@ There is also `run_gx_validation.py`, a more verbose variant that uses a GX `Val
 
 ## Run it in a sandbox
 
-The demo has been run end-to-end on two ephemeral sandbox providers (both `python:3.12-slim`, identical output):
+Because the demo is just `pip install great_expectations` + one file, it runs in any
+ephemeral code sandbox. Ready-to-use launchers live in [`sandboxes/`](sandboxes/):
 
-**[islo.dev](https://islo.dev)** — cloud Firecracker microVM. islo does not sync your working directory, so inject the script over stdin:
-
-```bash
-B64=$(base64 < gx_demo.py | tr -d '\n')
-islo use gx-demo -i python:3.12-slim -- bash -lc \
-  "pip install great_expectations && echo $B64 | base64 -d | python3 -"
-```
-
-**[crabbox.sh](https://crabbox.sh)** — local Apple `container` provider, brokerless. crabbox syncs your checkout, so run the file directly (requires a git repo):
+| Provider | Type | Launcher | Status |
+|---|---|---|---|
+| [islo.dev](https://islo.dev) | Cloud Firecracker microVM | [`sandboxes/run_islo.sh`](sandboxes/run_islo.sh) | ✅ Verified |
+| [crabbox.sh](https://crabbox.sh) (`apple-container`) | Local Apple container, brokerless | [`sandboxes/run_crabbox.sh`](sandboxes/run_crabbox.sh) | ✅ Verified |
+| [Daytona](https://www.daytona.io) | Cloud AI sandbox | [`sandboxes/run_daytona.py`](sandboxes/run_daytona.py) | 📄 Documented (SDK) |
 
 ```bash
-crabbox run --provider apple-container --apple-container-image python:3.12-slim \
-  -- bash -lc 'pip install -r requirements.txt && python gx_demo.py'
+sandboxes/run_islo.sh        # cloud microVM (injects the script over stdin)
+sandboxes/run_crabbox.sh     # local Apple container (syncs the git checkout)
+python sandboxes/run_daytona.py   # needs: pip install daytona && export DAYTONA_API_KEY=...
 ```
+
+All three produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
+details (and why document-data tools like Tensorlake are *not* sandboxes for this).
 
 ## Requirements
 
