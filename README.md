@@ -39,22 +39,26 @@ There is also `run_gx_validation.py`, a more verbose variant that uses a GX `Val
 ## Run it in a sandbox
 
 Because the demo is just `pip install great_expectations` + one file, it runs in any
-ephemeral code sandbox. Ready-to-use launchers live in [`sandboxes/`](sandboxes/):
-
-| Provider | Type | Launcher | Status |
-|---|---|---|---|
-| [islo.dev](https://islo.dev) | Cloud Firecracker microVM | [`sandboxes/run_islo.sh`](sandboxes/run_islo.sh) | ✅ Verified |
-| [crabbox.sh](https://crabbox.sh) (`apple-container`) | Local Apple container, brokerless | [`sandboxes/run_crabbox.sh`](sandboxes/run_crabbox.sh) | ✅ Verified |
-| [Daytona](https://www.daytona.io) | Cloud AI sandbox | [`sandboxes/run_daytona.py`](sandboxes/run_daytona.py) | 📄 Documented (SDK) |
+ephemeral code sandbox. The [`sandboxes/`](sandboxes/) package gives every provider one
+interface:
 
 ```bash
-sandboxes/run_islo.sh        # cloud microVM (injects the script over stdin)
-sandboxes/run_crabbox.sh     # local Apple container (syncs the git checkout)
-python sandboxes/run_daytona.py   # needs: pip install daytona && export DAYTONA_API_KEY=...
+python sandboxes/run.py --list      # show providers + status
+python sandboxes/run.py islo        # run gx_demo.py in an islo.dev microVM
+python sandboxes/run.py crabbox     # run in a local Apple container (brokerless)
 ```
 
-All three produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
-details (and why document-data tools like Tensorlake are *not* sandboxes for this).
+| Provider | Type | Status |
+|---|---|---|
+| [islo.dev](https://islo.dev) | Cloud Firecracker microVM | ✅ Verified (reference) |
+| [crabbox.sh](https://crabbox.sh) (`apple-container`) | Local Apple container | ✅ Verified |
+| [Daytona](https://www.daytona.io) | Cloud AI sandbox (SDK) | 🟡 Implemented ([#8](https://github.com/zozo123/gx-sandbox-demo/issues/8)) |
+| [Modal](https://modal.com) | Serverless containers | ⬜ Planned ([#6](https://github.com/zozo123/gx-sandbox-demo/issues/6)) |
+| [E2B](https://e2b.dev) | Code Interpreter sandbox | ⬜ Planned ([#7](https://github.com/zozo123/gx-sandbox-demo/issues/7)) |
+| [Tensorlake](https://www.tensorlake.ai) | Document/data infra (not a sandbox) | ❌ Data source ([#9](https://github.com/zozo123/gx-sandbox-demo/issues/9)) |
+
+All runners produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
+the provider contract, how to add one, and why Tensorlake is a data source — not a sandbox.
 
 ## Requirements
 
