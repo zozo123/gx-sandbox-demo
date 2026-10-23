@@ -1,6 +1,6 @@
 # gx-sandbox-demo
 
-A minimal, end-to-end [Great Expectations](https://github.com/great-expectations/great_expectations) (GX Core 1.x) data-quality demo. It builds a small pandas DataFrame in memory, defines an expectation suite, and validates the data — no external database, no warehouse, no config files.
+A minimal, end-to-end [Great Expectations](https://github.com/fivetran/great_expectations) (GX Core 1.x) data-quality demo. It builds a small pandas DataFrame in memory, defines an expectation suite, and validates the data — no external database, no warehouse, no config files.
 
 One expectation **fails by design** so you can see that validation is actually running and not silently passing everything.
 
@@ -50,14 +50,14 @@ python sandboxes/run.py crabbox     # run in a local Apple container (brokerless
 
 | Provider | Type | Status |
 |---|---|---|
-| [islo.dev](https://islo.dev) | Cloud Firecracker microVM | ✅ Verified (reference) |
-| [crabbox.sh](https://crabbox.sh) (`apple-container`) | Local Apple container | ✅ Verified |
-| [Daytona](https://www.daytona.io) | Cloud AI sandbox (SDK) | 🟡 Implemented ([#8](https://github.com/zozo123/gx-sandbox-demo/issues/8)) |
-| [Modal](https://modal.com) | Serverless containers | ⬜ Planned ([#6](https://github.com/zozo123/gx-sandbox-demo/issues/6)) |
-| [E2B](https://e2b.dev) | Code Interpreter sandbox | ⬜ Planned ([#7](https://github.com/zozo123/gx-sandbox-demo/issues/7)) |
-| [Tensorlake](https://www.tensorlake.ai) | Document/data infra (not a sandbox) | ❌ Data source ([#9](https://github.com/zozo123/gx-sandbox-demo/issues/9)) |
+| [islo.dev](https://islo.dev) | Cloud Firecracker microVM | Verified (reference) |
+| [crabbox.sh](https://crabbox.sh) (`apple-container`) | Local Apple container | Verified |
+| [Daytona](https://www.daytona.io) | Cloud AI sandbox (SDK) | Implemented, not verified end to end |
+| [Modal](https://modal.com) | Serverless containers | Not implemented |
+| [E2B](https://e2b.dev) | Code Interpreter sandbox | Not implemented |
+| [Tensorlake](https://www.tensorlake.ai) | Document/data infra (not a sandbox) | Not a runner; possible data source, not implemented |
 
-All runners produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
+The verified runners (islo.dev, crabbox) produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
 the provider contract, how to add one, and why Tensorlake is a data source — not a sandbox.
 
 ## Requirements
@@ -66,7 +66,7 @@ Python 3.10–3.13. Dependencies are pinned to sane lower bounds in [`requiremen
 
 ## Notes
 
-The canonical Great Expectations repository is [github.com/great-expectations/great_expectations](https://github.com/great-expectations/great_expectations) (`great_expectations` 1.x, Python 3.10–3.13). The `fivetran/great_expectations` URL redirects to the same repo.
+Great Expectations source: [github.com/fivetran/great_expectations](https://github.com/fivetran/great_expectations) (the old `great-expectations/great_expectations` URL redirects there).
 
 ## License
 

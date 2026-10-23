@@ -7,13 +7,13 @@ Every provider implements the same contract::
 so the demo runs unchanged across providers. Providers that need an SDK import it
 lazily, so this module imports cleanly even without the optional dependency installed.
 
-Status (tracking issue #5):
+Status:
     islo        implemented, verified         (reference example)
     crabbox     implemented, verified         (Apple container, brokerless)
-    daytona     implemented, needs e2e check  (#8)
-    modal       planned                       (#6)
-    e2b         planned                       (#7)
-    tensorlake  N/A - data source, not a sandbox (#9)
+    daytona     implemented, not verified end to end
+    modal       not implemented
+    e2b         not implemented
+    tensorlake  N/A - data source, not a sandbox; not implemented
 """
 
 from __future__ import annotations
@@ -21,8 +21,6 @@ from __future__ import annotations
 import base64
 import subprocess
 from pathlib import Path
-
-ISSUES = "https://github.com/zozo123/gx-sandbox-demo/issues"
 
 
 def _shell(cmd: list[str]) -> str:
@@ -65,28 +63,28 @@ def run_daytona(script: str = "gx_demo.py") -> str:
 
 
 def run_modal(script: str = "gx_demo.py") -> str:
-    """Modal serverless containers. See issue #6."""
-    raise NotImplementedError(f"Modal runner not implemented yet - see {ISSUES}/6")
+    """Modal serverless containers. Not implemented."""
+    raise NotImplementedError("Modal runner is not implemented")
 
 
 def run_e2b(script: str = "gx_demo.py") -> str:
-    """E2B Code Interpreter sandboxes. See issue #7."""
-    raise NotImplementedError(f"E2B runner not implemented yet - see {ISSUES}/7")
+    """E2B Code Interpreter sandboxes. Not implemented."""
+    raise NotImplementedError("E2B runner is not implemented")
 
 
 def run_tensorlake(script: str = "gx_demo.py") -> str:
-    """Tensorlake is document-ingestion infra, not a code sandbox. See issue #9."""
+    """Tensorlake is document-ingestion infra, not a code sandbox. Not implemented."""
     raise NotImplementedError(
         "Tensorlake is a document-ingestion / data platform, not a code-execution "
-        f"sandbox; it integrates as a data source, not a runner - see {ISSUES}/9"
+        "sandbox; it would integrate as a data source, not a runner (not implemented)"
     )
 
 
 PROVIDERS: dict[str, dict] = {
     "islo": {"run": run_islo, "status": "verified (reference)"},
     "crabbox": {"run": run_crabbox, "status": "verified"},
-    "daytona": {"run": run_daytona, "status": "implemented; verify e2e (#8)"},
-    "modal": {"run": run_modal, "status": "planned (#6)"},
-    "e2b": {"run": run_e2b, "status": "planned (#7)"},
-    "tensorlake": {"run": run_tensorlake, "status": "n/a - data source (#9)"},
+    "daytona": {"run": run_daytona, "status": "implemented, not verified end to end"},
+    "modal": {"run": run_modal, "status": "not implemented"},
+    "e2b": {"run": run_e2b, "status": "not implemented"},
+    "tensorlake": {"run": run_tensorlake, "status": "n/a - data source, not implemented"},
 }

@@ -19,21 +19,18 @@ def run(script: str = "gx_demo.py") -> str:  # execute the script, return stdout
 
 ## Providers
 
-| Provider | Type | Auth | Status | Issue |
-|---|---|---|---|---|
-| **islo.dev** | Cloud Firecracker microVM | `islo login` | ✅ Verified (reference) | — |
-| **crabbox** (`apple-container`) | Local Apple container, brokerless | none | ✅ Verified | — |
-| **Daytona** | Cloud AI sandbox (SDK) | `DAYTONA_API_KEY` | 🟡 Implemented; verify e2e | [#8](https://github.com/zozo123/gx-sandbox-demo/issues/8) |
-| **Modal** | Serverless containers | `modal token` | ⬜ Planned | [#6](https://github.com/zozo123/gx-sandbox-demo/issues/6) |
-| **E2B** | Code Interpreter sandbox | `E2B_API_KEY` | ⬜ Planned | [#7](https://github.com/zozo123/gx-sandbox-demo/issues/7) |
-| **Tensorlake** | Document-ingestion / data infra | — | ❌ Not a sandbox | [#9](https://github.com/zozo123/gx-sandbox-demo/issues/9) |
-
-Tracking: [#5](https://github.com/zozo123/gx-sandbox-demo/issues/5).
+| Provider | Type | Auth | Status |
+|---|---|---|---|
+| **islo.dev** | Cloud Firecracker microVM | `islo login` | Verified (reference) |
+| **crabbox** (`apple-container`) | Local Apple container, brokerless | none | Verified |
+| **Daytona** | Cloud AI sandbox (SDK) | `DAYTONA_API_KEY` | Implemented, not verified end to end |
+| **Modal** | Serverless containers | `modal token` | Not implemented |
+| **E2B** | Code Interpreter sandbox | `E2B_API_KEY` | Not implemented |
+| **Tensorlake** | Document-ingestion / data infra | — | Not a sandbox; not implemented |
 
 > **Why Tensorlake is not a runner:** it's document-ingestion / data infrastructure, not a
-> code-execution sandbox. It belongs *upstream* of GX as a **data source** (parse documents
-> → rows → GX validates them), so it's tracked as a data-source integration (#9), not a `run()`
-> provider.
+> code-execution sandbox. It would belong *upstream* of GX as a **data source** (parse documents
+> → rows → GX validates them), not as a `run()` provider. That integration is not implemented.
 
 ## Adding a provider
 
@@ -42,7 +39,7 @@ Tracking: [#5](https://github.com/zozo123/gx-sandbox-demo/issues/5).
 2. Register it in the `PROVIDERS` dict with a `status`.
 3. Verify it produces the canonical output and close the provider's tracking issue.
 
-All providers produce the same deterministic output (one expectation fails by design):
+The verified runners (islo.dev, crabbox) produce identical output (one expectation fails by design):
 
 ```
 overall: FAIL
