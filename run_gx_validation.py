@@ -2,8 +2,8 @@
 GX Core 1.x end-to-end demo: pandas, in-process, no external DB.
 Run:  pip install great_expectations  &&  python run_gx_validation.py
 """
-import pandas as pd
 import great_expectations as gx
+import pandas as pd
 from great_expectations import expectations as gxe
 
 # 1. Build a small DataFrame in-process (swap for pd.read_csv("data.csv") if you have a file)

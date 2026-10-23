@@ -1,6 +1,6 @@
 """Concise GX Core 1.x e2e demo: pandas, in-memory, no external DB."""
-import pandas as pd
 import great_expectations as gx
+import pandas as pd
 from great_expectations import expectations as gxe
 
 df = pd.DataFrame({
