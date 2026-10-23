@@ -58,7 +58,7 @@ python sandboxes/run.py crabbox     # run in a local Apple container (brokerless
 | [Tensorlake](https://www.tensorlake.ai) | Document/data infra (not a sandbox) | Not a runner; possible data source, not implemented |
 
 The verified runners (islo.dev, crabbox) produce identical output. See [`sandboxes/README.md`](sandboxes/README.md) for
-the provider contract, how to add one, and why Tensorlake is a data source — not a sandbox.
+the provider contract, how to add one, and why Tensorlake is not a sandbox runner.
 
 ## Requirements
 

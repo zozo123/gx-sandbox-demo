@@ -37,7 +37,7 @@ def run(script: str = "gx_demo.py") -> str:  # execute the script, return stdout
 1. Add a `run_<name>(script=...) -> str` function in `providers.py` (import any SDK **lazily**
    inside the function so the module stays importable without optional deps).
 2. Register it in the `PROVIDERS` dict with a `status`.
-3. Verify it produces the canonical output and close the provider's tracking issue.
+3. Verify it produces the canonical output, then update its status here and in the top-level README.
 
 The verified runners (islo.dev, crabbox) produce identical output (one expectation fails by design):
 
